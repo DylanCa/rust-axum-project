@@ -1,3 +1,3 @@
 # rust-axum-project
 
-Axum-focused project to learn the library in depth.
+Axum-focused projects to learn axum library in depth.

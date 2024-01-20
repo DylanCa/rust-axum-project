@@ -1,6 +1,6 @@
 use axum::Router;
 use axum::routing::{get, post};
-use crate::handlers::{create_user, get_user};
+use crate::users::handlers::{create_user, get_user};
 
 pub fn get_routes() -> Router {
     Router::new()

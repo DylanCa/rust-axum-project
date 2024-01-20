@@ -1,8 +1,10 @@
-use axum::Router;
 use crate::api::{hello_world, users};
+use crate::AppState;
+use axum::Router;
+use std::sync::Arc;
 
-pub fn get_routes() -> Router {
+pub fn get_routes(app_state: Arc<AppState>) -> Router {
     Router::new()
-        .merge(hello_world::routes::get_routes())
-        .merge(users::routes::get_routes())
+        .merge(hello_world::routes::get_routes(app_state.clone()))
+        .merge(users::routes::get_routes(app_state.clone()))
 }

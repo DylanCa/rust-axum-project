@@ -1,9 +1,12 @@
-use axum::Router;
-use axum::routing::{get, post};
 use crate::api::users::handlers::{create_user, get_user};
+use crate::AppState;
+use axum::routing::{get, post};
+use axum::Router;
+use std::sync::Arc;
 
-pub fn get_routes() -> Router {
+pub fn get_routes(app_state: Arc<AppState>) -> Router {
     Router::new()
+        .route("/users/:uuid", get(get_user))
         .route("/users", post(create_user))
-        .route("/users", get(get_user))
+        .with_state(app_state)
 }

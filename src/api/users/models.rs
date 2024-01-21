@@ -8,6 +8,8 @@ pub struct User {
     id: String,
     pub name: String,
     email: String,
+
+    #[serde(skip_serializing)]
     password: String,
 
     #[serde(skip_deserializing)]
@@ -47,19 +49,20 @@ impl User {
     }
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Serialize)]
 pub struct UserResponse {
     pub id: String,
     pub name: String,
     pub email: String,
+
+    #[serde(skip_serializing)]
     pub password: String,
     pub created_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Debug, Deserialize)]
 pub struct UserLogin {
     pub email: String,
     pub password: String,
 }
-

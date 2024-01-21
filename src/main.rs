@@ -55,7 +55,7 @@ async fn get_db_pool() -> Pool<MySql> {
 }
 
 async fn main_response_mapper(res: Response) -> Response {
-    println!("->> {res:#?} <<- main_response_mapper");
+    println!("->> main_response_mapper");
     println!();
 
     res

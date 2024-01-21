@@ -30,7 +30,7 @@ pub async fn create_user(
 
     if let Err(err) = query_result {
         if err.contains("Duplicate entry") {
-            let error_response = serde_json::json!({
+            let error_response = json!({
                 "status": "error",
                 "message": "User already exists",
             });

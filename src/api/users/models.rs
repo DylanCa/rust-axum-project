@@ -56,3 +56,10 @@ pub struct UserResponse {
     pub created_at: Option<DateTime<Utc>>,
     pub updated_at: Option<DateTime<Utc>>,
 }
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct UserLogin {
+    pub email: String,
+    pub password: String,
+}
+

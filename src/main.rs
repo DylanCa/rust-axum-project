@@ -1,10 +1,15 @@
-use axum::Router;
+use axum::response::Response;
+use axum::{middleware, Router};
 use dotenv::dotenv;
 use sqlx::mysql::MySqlPoolOptions;
 use sqlx::{MySql, MySqlPool, Pool};
 use std::sync::Arc;
+use tower_cookies::CookieManagerLayer;
 
 mod api;
+mod errors;
+
+pub use self::errors::Error;
 
 #[derive(Debug)]
 pub struct AppState {
@@ -19,7 +24,10 @@ async fn main() {
     let pool = get_db_pool().await;
     let app_state = Arc::new(AppState { db: pool.clone() });
 
-    let router = Router::new().nest("/api", api::routes::get_routes(app_state.clone()));
+    let router = Router::new()
+        .nest("/api", api::routes::get_routes(app_state.clone()))
+        .layer(middleware::map_response(main_response_mapper))
+        .layer(CookieManagerLayer::new());
 
     let serv_addr = "0.0.0.0:3000";
     let listener = tokio::net::TcpListener::bind(&serv_addr).await.unwrap();
@@ -30,7 +38,7 @@ async fn main() {
 
 async fn get_db_pool() -> Pool<MySql> {
     let database_url = std::env::var("DATABASE_URL").expect("DATABASE_URL must set");
-    let pool = match MySqlPoolOptions::new()
+    match MySqlPoolOptions::new()
         .max_connections(10)
         .connect(&database_url)
         .await
@@ -43,7 +51,12 @@ async fn get_db_pool() -> Pool<MySql> {
             println!("❌ Failed to connect to the database: {:?}", err);
             std::process::exit(1);
         }
-    };
+    }
+}
 
-    pool
+async fn main_response_mapper(res: Response) -> Response {
+    println!("->> {res:#?} <<- main_response_mapper");
+    println!();
+
+    res
 }

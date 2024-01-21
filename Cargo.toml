@@ -15,3 +15,4 @@ dotenv = "0.15.0"
 uuid = { version = "1.7.0", features = ["serde", "v4"] }
 sqlx = { version = "0.7.3", features = ["runtime-async-std-native-tls", "mysql", "chrono", "uuid"] }
 bcrypt = "0.15.0"
+tower-cookies = "0.10.0"

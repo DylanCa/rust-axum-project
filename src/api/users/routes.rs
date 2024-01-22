@@ -16,4 +16,3 @@ pub fn get_login(app_state: Arc<AppState>) -> Router {
         .route("/login", post(login))
         .with_state(app_state)
 }
-

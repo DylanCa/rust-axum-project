@@ -4,11 +4,16 @@ use dotenv::dotenv;
 use sqlx::mysql::MySqlPoolOptions;
 use sqlx::{MySql, MySqlPool, Pool};
 use std::sync::Arc;
+use axum::body::Body;
+use axum::middleware::from_fn;
+use axum::routing::post;
 use tower_cookies::CookieManagerLayer;
+use crate::api::auth_mw::auth_required;
+use crate::api::users::handlers::login;
 
 mod api;
 mod errors;
-
+mod ctx;
 pub use self::errors::Error;
 
 #[derive(Debug)]
@@ -24,8 +29,12 @@ async fn main() {
     let pool = get_db_pool().await;
     let app_state = Arc::new(AppState { db: pool.clone() });
 
+    let routes_api = api::routes::get_routes(app_state.clone())
+        .route_layer(from_fn(auth_required::<Body>));
+
     let router = Router::new()
-        .nest("/api", api::routes::get_routes(app_state.clone()))
+        .merge(api::routes::get_login(app_state.clone()))
+        .nest("/api", routes_api)
         .layer(middleware::map_response(main_response_mapper))
         .layer(CookieManagerLayer::new());
 

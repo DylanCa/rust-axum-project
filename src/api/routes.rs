@@ -8,3 +8,7 @@ pub fn get_routes(app_state: Arc<AppState>) -> Router {
         .merge(hello_world::routes::get_routes(app_state.clone()))
         .merge(users::routes::get_routes(app_state.clone()))
 }
+
+pub fn get_login(app_state: Arc<AppState>) -> Router {
+    users::routes::get_login(app_state)
+}

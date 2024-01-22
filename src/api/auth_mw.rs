@@ -31,21 +31,19 @@ impl<S: Send + Sync> FromRequestParts<S> for Ctx {
 
         let auth_token = cookies.get(AUTH_TOKEN).map(|c| c.value().to_string());
 
-        let (user_id, exp, sign) = auth_token
+        let (user_id, _exp, _sign) = auth_token
             .ok_or(Error::AuthFailNoAuthTokenCookie)
             .and_then(parse_token)?;
+
+        // FIXME: Add exp & sign checks here
 
         Ok(Ctx::new(user_id))
     }
 }
 
-
-
 fn parse_token(token: String) -> Result<(String, String, String), Error> {
-    let (_whole, user_id, exp, sign) = regex_captures!(
-        r#"^(.+)\.(.+)\.(.+)"#,
-        &token
-    ).ok_or(Error::AuthFailTokenWrongFormat)?;
+    let (_whole, user_id, exp, sign) =
+        regex_captures!(r#"^(.+)\.(.+)\.(.+)"#, &token).ok_or(Error::AuthFailTokenWrongFormat)?;
 
     Ok((user_id.to_string(), exp.to_string(), sign.to_string()))
 }

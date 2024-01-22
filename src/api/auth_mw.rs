@@ -1,22 +1,22 @@
-use async_trait::async_trait;
-use axum::body::Body;
-use axum::extract::FromRequestParts;
-use axum::http::Request;
-use axum::http::request::Parts;
-use axum::middleware::Next;
-use axum::RequestPartsExt;
-use axum::response::Response;
-use lazy_regex::regex_captures;
-use tower_cookies::Cookies;
 use crate::api::AUTH_TOKEN;
 use crate::ctx::Ctx;
 use crate::Error;
+use async_trait::async_trait;
+use axum::body::Body;
+use axum::extract::FromRequestParts;
+use axum::http::request::Parts;
+use axum::http::Request;
+use axum::middleware::Next;
+use axum::response::Response;
+use axum::RequestPartsExt;
+use lazy_regex::regex_captures;
+use tower_cookies::Cookies;
 
 pub async fn auth_required<B>(
     ctx: Result<Ctx, Error>,
     req: Request<Body>,
-    next: Next) -> Result<Response, Error> {
-
+    next: Next,
+) -> Result<Response, Error> {
     ctx?;
 
     Ok(next.run(req).await)

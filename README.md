@@ -21,8 +21,6 @@ _Each objective has a `-> (resulting explored concept list)` and a detailed list
 - Dockerized, put on AWS and hosted & available online
   - Docker, AWS, Networking, hosting
 
-_List is not exhaustive, other objectives might be added_
-
 ## Goals for this Project
 - Improve with Rust and WebServ concepts
 - Learn Websockets

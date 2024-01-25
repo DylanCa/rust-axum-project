@@ -17,6 +17,7 @@ pub async fn auth_required<B>(
     req: Request<Body>,
     next: Next,
 ) -> Result<Response, Error> {
+    println!("->> auth_mw - {ctx:#?}");
     ctx?;
 
     Ok(next.run(req).await)

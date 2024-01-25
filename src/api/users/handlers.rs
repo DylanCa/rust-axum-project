@@ -8,6 +8,7 @@ use bcrypt::verify;
 use serde_json::json;
 use std::sync::Arc;
 use tower_cookies::{Cookie, Cookies};
+use crate::ctx::Ctx;
 
 pub async fn create_user(
     State(state): State<Arc<AppState>>,
@@ -25,8 +26,6 @@ pub async fn create_user(
         .execute(&state.db)
         .await
         .map_err(|err: sqlx::Error| err.to_string());
-
-    println!("{:#?}", query_result);
 
     if let Err(err) = query_result {
         if err.contains("Duplicate entry") {
@@ -47,13 +46,13 @@ pub async fn create_user(
 }
 
 pub async fn get_user(
-    Path(uuid): Path<uuid::Uuid>,
     State(state): State<Arc<AppState>>,
+    ctx: Ctx
 ) -> Result<(StatusCode, Json<UserResponse>), (StatusCode, Json<serde_json::Value>)> {
     let query_result = sqlx::query_as!(
         UserResponse,
         r#"SELECT * FROM users WHERE id = ?"#,
-        uuid.to_string()
+        ctx.user_id()
     )
     .fetch_one(&state.db)
     .await
@@ -63,8 +62,6 @@ pub async fn get_user(
             Json(json!({"status": "error","message": format!("{:?}", e)})),
         )
     })?;
-
-    println!("{:#?}", query_result);
 
     Ok((StatusCode::CREATED, Json(query_result)))
 }

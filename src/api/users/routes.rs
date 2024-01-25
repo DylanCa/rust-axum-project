@@ -6,7 +6,7 @@ use std::sync::Arc;
 
 pub fn get_routes(app_state: Arc<AppState>) -> Router {
     Router::new()
-        .route("/users/:uuid", get(get_user))
+        .route("/user", get(get_user))
         .route("/users", post(create_user))
         .with_state(app_state)
 }

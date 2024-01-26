@@ -1,3 +1,15 @@
+use axum::extract::{Path, Query, State};
+use axum::http::StatusCode;
+use axum::Json;
+use serde_json::{json, Value};
+use std::sync::Arc;
+use rand::prelude::SliceRandom;
+use sqlx::Row;
+
+use crate::api::redirection::models::{Redirection, RedirectionShortcode, RedirectionParams};
+use crate::AppState;
+use crate::ctx::Ctx;
+
 pub async fn create_redirection(
     State(state): State<Arc<AppState>>,
     ctx: Ctx,
@@ -37,4 +49,26 @@ pub async fn create_redirection(
     }
 
     Ok((StatusCode::OK, Json(redirect)))
+}
+
+pub async fn get_redirection_url(
+    State(state): State<Arc<AppState>>,
+    ctx: Ctx,
+    Query(code): Query<RedirectionParams>,
+) -> Result<(StatusCode, Json<RedirectionShortcode>), (StatusCode, Json<Value>)> {
+        let query_result = sqlx::query_as!(
+            RedirectionShortcode,
+            r#"SELECT * FROM redirections WHERE shortcode = ?"#,
+            code.code.unwrap()
+        )
+        .fetch_one(&state.db)
+        .await
+        .map_err(|e| {
+            (
+                StatusCode::INTERNAL_SERVER_ERROR,
+                Json(json!({"status": "error","message": format!("{:?}", e)})),
+            )
+        })?;
+
+    Ok((StatusCode::OK, Json(query_result)))
 }

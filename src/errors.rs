@@ -1,6 +1,6 @@
 use axum::http::StatusCode;
-use axum::Json;
 use axum::response::{IntoResponse, Response};
+use axum::Json;
 use serde_json::json;
 
 pub type Result<T> = core::result::Result<T, Error>;
@@ -18,10 +18,21 @@ impl IntoResponse for Error {
     fn into_response(self) -> Response {
         println!("{self:#?}");
 
-        let mut response = (StatusCode::INTERNAL_SERVER_ERROR, false, "UNHANDLED_CLIENT_ERROR");
+        let mut response = (
+            StatusCode::INTERNAL_SERVER_ERROR,
+            false,
+            "UNHANDLED_CLIENT_ERROR",
+        );
         match self {
-            Error::LoginFailed | Error::WrongPassword | Error::UserNotFound | Error::AuthFailTokenWrongFormat => response = (StatusCode::UNAUTHORIZED, false, "LOGIN_FAILED"),
-            Error::AuthFailNoAuthTokenCookie => response = (StatusCode::UNAUTHORIZED, false, "NOT_LOGGED_IN")
+            Error::LoginFailed
+            | Error::WrongPassword
+            | Error::UserNotFound
+            | Error::AuthFailTokenWrongFormat => {
+                response = (StatusCode::UNAUTHORIZED, false, "LOGIN_FAILED")
+            }
+            Error::AuthFailNoAuthTokenCookie => {
+                response = (StatusCode::UNAUTHORIZED, false, "NOT_LOGGED_IN")
+            }
         }
 
         let status_code = response.0;

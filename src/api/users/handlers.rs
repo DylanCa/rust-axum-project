@@ -1,5 +1,6 @@
 use crate::api::users::models::{User, UserLogin, UserResponse};
 use crate::api::AUTH_TOKEN;
+use crate::ctx::Ctx;
 use crate::AppState;
 use axum::extract::{Path, State};
 use axum::http::StatusCode;
@@ -8,7 +9,6 @@ use bcrypt::verify;
 use serde_json::json;
 use std::sync::Arc;
 use tower_cookies::{Cookie, Cookies};
-use crate::ctx::Ctx;
 
 pub async fn create_user(
     State(state): State<Arc<AppState>>,
@@ -47,7 +47,7 @@ pub async fn create_user(
 
 pub async fn get_user(
     State(state): State<Arc<AppState>>,
-    ctx: Ctx
+    ctx: Ctx,
 ) -> Result<(StatusCode, Json<UserResponse>), (StatusCode, Json<serde_json::Value>)> {
     let query_result = sqlx::query_as!(
         UserResponse,

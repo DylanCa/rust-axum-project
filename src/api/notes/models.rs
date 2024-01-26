@@ -39,7 +39,6 @@ impl Note {
     }
 }
 
-
 #[derive(Debug, Serialize)]
 pub struct NoteResponse {
     pub id: String,

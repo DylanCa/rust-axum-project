@@ -2,15 +2,15 @@ use crate::api::users::models::{User, UserLogin, UserResponse};
 use crate::api::AUTH_TOKEN;
 use crate::ctx::Ctx;
 use crate::AppState;
+use crate::Error::{LoginFailed, UserNotFound};
 use axum::extract::State;
 use axum::http::StatusCode;
+use axum::response::IntoResponse;
 use axum::Json;
 use bcrypt::verify;
 use serde_json::json;
 use std::sync::Arc;
-use axum::response::IntoResponse;
 use tower_cookies::{Cookie, Cookies};
-use crate::Error::{LoginFailed, UserNotFound};
 
 pub async fn create_user(
     State(state): State<Arc<AppState>>,

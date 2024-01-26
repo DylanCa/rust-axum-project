@@ -34,7 +34,7 @@ impl Error {
             Error::AuthFailNoAuthTokenCookie => {
                 response = (StatusCode::UNAUTHORIZED, false, "NOT_LOGGED_IN")
             }
-            Error::UrlNotFound => response = (StatusCode::NOT_FOUND, false, "URL_NOT_FOUND")
+            Error::UrlNotFound => response = (StatusCode::NOT_FOUND, false, "URL_NOT_FOUND"),
         }
 
         let status_code = response.0;

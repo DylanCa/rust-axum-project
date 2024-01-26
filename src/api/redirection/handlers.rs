@@ -1,11 +1,11 @@
 use axum::extract::{Query, State};
 use axum::http::StatusCode;
+use axum::response::IntoResponse;
 use axum::Json;
 use rand::prelude::SliceRandom;
 use serde_json::{json, Value};
 use sqlx::Row;
 use std::sync::Arc;
-use axum::response::IntoResponse;
 
 use crate::api::redirection::models::{Redirection, RedirectionParams, RedirectionShortcode};
 use crate::ctx::Ctx;

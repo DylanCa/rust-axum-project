@@ -6,7 +6,4 @@ pub mod users;
 pub mod notes;
 pub mod redirection;
 
-
-
-
 pub const AUTH_TOKEN: &str = "auth-token";

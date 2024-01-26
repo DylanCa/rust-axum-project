@@ -5,10 +5,12 @@ use rand::prelude::SliceRandom;
 use serde_json::{json, Value};
 use sqlx::Row;
 use std::sync::Arc;
+use axum::response::IntoResponse;
 
 use crate::api::redirection::models::{Redirection, RedirectionParams, RedirectionShortcode};
 use crate::ctx::Ctx;
 use crate::AppState;
+use crate::Error::UrlNotFound;
 
 pub async fn create_redirection(
     State(state): State<Arc<AppState>>,
@@ -62,12 +64,7 @@ pub async fn get_redirection_url(
     )
     .fetch_one(&state.db)
     .await
-    .map_err(|e| {
-        (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(json!({"status": "error","message": format!("{:?}", e)})),
-        )
-    })?;
+    .map_err(|e| UrlNotFound.into_code_value())?;
 
     Ok((StatusCode::OK, Json(query_result)))
 }

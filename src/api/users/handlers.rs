@@ -2,7 +2,7 @@ use crate::api::users::models::{User, UserLogin, UserResponse};
 use crate::api::AUTH_TOKEN;
 use crate::ctx::Ctx;
 use crate::AppState;
-use axum::extract::{Path, State};
+use axum::extract::State;
 use axum::http::StatusCode;
 use axum::Json;
 use bcrypt::verify;

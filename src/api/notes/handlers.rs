@@ -1,7 +1,7 @@
 use crate::api::notes::models::{Note, NoteResponse};
 use crate::ctx::Ctx;
 use crate::AppState;
-use axum::extract::{Path, Query, State};
+use axum::extract::{Path, State};
 use axum::http::StatusCode;
 use axum::Json;
 use serde_json::{json, Value};

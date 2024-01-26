@@ -53,7 +53,6 @@ pub async fn create_redirection(
 
 pub async fn get_redirection_url(
     State(state): State<Arc<AppState>>,
-    ctx: Ctx,
     Query(code): Query<RedirectionParams>,
 ) -> Result<(StatusCode, Json<RedirectionShortcode>), (StatusCode, Json<Value>)> {
     let query_result = sqlx::query_as!(

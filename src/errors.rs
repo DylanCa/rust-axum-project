@@ -20,7 +20,8 @@ impl IntoResponse for Error {
 
         let mut response = (StatusCode::INTERNAL_SERVER_ERROR, false, "UNHANDLED_CLIENT_ERROR");
         match self {
-            Error::LoginFailed | Error::WrongPassword | Error::UserNotFound | Error::AuthFailNoAuthTokenCookie | Error::AuthFailTokenWrongFormat => response = (StatusCode::UNAUTHORIZED, false, "LOGIN_FAILED")
+            Error::LoginFailed | Error::WrongPassword | Error::UserNotFound | Error::AuthFailTokenWrongFormat => response = (StatusCode::UNAUTHORIZED, false, "LOGIN_FAILED"),
+            Error::AuthFailNoAuthTokenCookie => response = (StatusCode::UNAUTHORIZED, false, "NOT_LOGGED_IN")
         }
 
         let status_code = response.0;

@@ -63,7 +63,7 @@ pub async fn get_user(
         )
     })?;
 
-    Ok((StatusCode::CREATED, Json(query_result)))
+    Ok((StatusCode::OK, Json(query_result)))
 }
 
 pub async fn login(

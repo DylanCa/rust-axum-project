@@ -8,7 +8,9 @@ use axum::Json;
 use bcrypt::verify;
 use serde_json::json;
 use std::sync::Arc;
+use axum::response::IntoResponse;
 use tower_cookies::{Cookie, Cookies};
+use crate::Error::{LoginFailed, UserNotFound};
 
 pub async fn create_user(
     State(state): State<Arc<AppState>>,
@@ -56,12 +58,7 @@ pub async fn get_user(
     )
     .fetch_one(&state.db)
     .await
-    .map_err(|e| {
-        (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(json!({"status": "error","message": format!("{:?}", e)})),
-        )
-    })?;
+    .map_err(|e| UserNotFound.into_code_value())?;
 
     Ok((StatusCode::OK, Json(query_result)))
 }
@@ -78,16 +75,11 @@ pub async fn login(
     )
     .fetch_one(&data.db)
     .await
-    .map_err(|e| {
-        (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            Json(json!({"status": "error","message": format!("{:?}", e)})),
-        )
-    })?;
+    .map_err(|e| LoginFailed.into_code_value())?;
 
     if !verify(payload.password, &*user.password).unwrap() {
         return Err((
-            StatusCode::INTERNAL_SERVER_ERROR,
+            StatusCode::UNAUTHORIZED,
             Json(json!({"status": "error","message": "Wrong Password."})),
         ));
     }

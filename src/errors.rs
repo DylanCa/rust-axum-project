@@ -4,8 +4,6 @@ use axum::Json;
 use log::info;
 use serde_json::{json, Value};
 
-pub type Result<T> = core::result::Result<T, Error>;
-
 #[derive(Debug)]
 pub enum Error {
     LoginFailed,
@@ -20,11 +18,7 @@ impl Error {
     pub fn into_code_value(self) -> (StatusCode, Json<Value>) {
         info!("{self:#?}");
 
-        let mut response = (
-            StatusCode::INTERNAL_SERVER_ERROR,
-            false,
-            "UNHANDLED_CLIENT_ERROR",
-        );
+        let response;
         match self {
             Error::LoginFailed
             | Error::WrongPassword

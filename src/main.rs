@@ -26,6 +26,8 @@ pub struct AppState {
 #[tokio::main]
 async fn main() {
     dotenv().ok();
+    env_logger::init();
+
     info!("🌟 Rust Playground Server 🌟");
 
     let pool = get_db_pool().await;
@@ -72,7 +74,6 @@ async fn get_db_pool() -> Pool<MySql> {
 
 async fn main_response_mapper(res: Response) -> Response {
     info!("->> main_response_mapper");
-    info!("");
 
     res
 }

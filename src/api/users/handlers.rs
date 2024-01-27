@@ -5,7 +5,6 @@ use crate::AppState;
 use crate::Error::{LoginFailed, UserNotFound};
 use axum::extract::State;
 use axum::http::StatusCode;
-use axum::response::IntoResponse;
 use axum::Json;
 use bcrypt::verify;
 use serde_json::json;
@@ -58,7 +57,7 @@ pub async fn get_user(
     )
     .fetch_one(&state.db)
     .await
-    .map_err(|e| UserNotFound.into_code_value())?;
+    .map_err(|_e| UserNotFound.into_code_value())?;
 
     Ok((StatusCode::OK, Json(query_result)))
 }
@@ -75,7 +74,7 @@ pub async fn login(
     )
     .fetch_one(&data.db)
     .await
-    .map_err(|e| LoginFailed.into_code_value())?;
+    .map_err(|_e| LoginFailed.into_code_value())?;
 
     if !verify(payload.password, &*user.password).unwrap() {
         return Err((

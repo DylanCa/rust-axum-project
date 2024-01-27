@@ -1,9 +1,8 @@
 use axum::extract::{Query, State};
 use axum::http::StatusCode;
-use axum::response::IntoResponse;
 use axum::Json;
 use rand::prelude::SliceRandom;
-use serde_json::{json, Value};
+use serde_json::Value;
 use sqlx::Row;
 use std::sync::Arc;
 
@@ -64,7 +63,7 @@ pub async fn get_redirection_url(
     )
     .fetch_one(&state.db)
     .await
-    .map_err(|e| UrlNotFound.into_code_value())?;
+    .map_err(|_e| UrlNotFound.into_code_value())?;
 
     Ok((StatusCode::OK, Json(query_result)))
 }

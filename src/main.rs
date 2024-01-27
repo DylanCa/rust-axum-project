@@ -7,7 +7,11 @@ use dotenv::dotenv;
 use sqlx::mysql::MySqlPoolOptions;
 use sqlx::{MySql, MySqlPool, Pool};
 use std::sync::Arc;
+use serde_json::Value;
+use socketioxide::extract::{AckSender, Bin, Data, SocketRef};
+use socketioxide::SocketIo;
 use tower_cookies::CookieManagerLayer;
+use log::info;
 
 mod api;
 mod ctx;
@@ -27,14 +31,20 @@ async fn main() {
     let pool = get_db_pool().await;
     let app_state = Arc::new(AppState { db: pool.clone() });
 
+    let (socket_layer, io) = SocketIo::new_layer();
+
+    io.ns("/ws", on_connect);
+
     let routes_api =
         api::routes::get_routes(app_state.clone()).route_layer(from_fn(auth_required::<Body>));
+
 
     let router = Router::new()
         .merge(api::routes::get_login(app_state.clone()))
         .nest("/api", routes_api)
         .layer(middleware::map_response(main_response_mapper))
-        .layer(CookieManagerLayer::new());
+        .layer(CookieManagerLayer::new())
+        .layer(socket_layer);
 
     let serv_addr = "0.0.0.0:3000";
     let listener = tokio::net::TcpListener::bind(&serv_addr).await.unwrap();

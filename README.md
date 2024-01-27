@@ -11,7 +11,7 @@ _Each objective has a `-> (resulting explored concept list)` and a detailed list
   4. Add `/user` endpoint with required auth
 - ✅ Note app per user
   - DB storing, data relation
-- Chat app between 2 users & in a chatroom
+- 🔄 Chat app between 2 users & in a chatroom
   - Websockets, Authentication, fast DB access
 - ✅ Word-based URL redirection service
   - -> Generate shortened URL with words (like bit.ly/flamingo-test-ocean)

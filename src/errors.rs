@@ -1,6 +1,7 @@
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
+use log::info;
 use serde_json::{json, Value};
 
 pub type Result<T> = core::result::Result<T, Error>;
@@ -17,7 +18,7 @@ pub enum Error {
 
 impl Error {
     pub fn into_code_value(self) -> (StatusCode, Json<Value>) {
-        println!("{self:#?}");
+        info!("{self:#?}");
 
         let mut response = (
             StatusCode::INTERNAL_SERVER_ERROR,

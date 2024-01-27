@@ -4,6 +4,7 @@ use crate::AppState;
 use axum::extract::{Path, State};
 use axum::http::StatusCode;
 use axum::Json;
+use log::info;
 use serde_json::{json, Value};
 use std::sync::Arc;
 
@@ -39,7 +40,7 @@ pub async fn get_note(
     ctx: Ctx,
     Path(id): Path<String>,
 ) -> Result<(StatusCode, Json<NoteResponse>), (StatusCode, Json<Value>)> {
-    println!("{id:?}");
+    info!("{id:?}");
     let query_result = sqlx::query_as!(
         NoteResponse,
         r#"SELECT * FROM notes WHERE id = ? AND user_id = ?"#,

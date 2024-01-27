@@ -10,6 +10,7 @@ use axum::middleware::Next;
 use axum::response::Response;
 use axum::RequestPartsExt;
 use lazy_regex::regex_captures;
+use log::info;
 use tower_cookies::Cookies;
 
 pub async fn auth_required<B>(
@@ -17,7 +18,7 @@ pub async fn auth_required<B>(
     req: Request<Body>,
     next: Next,
 ) -> Result<Response, Error> {
-    println!("->> auth_mw - {ctx:#?}");
+    info!("->> auth_mw - {ctx:#?}");
     ctx?;
 
     Ok(next.run(req).await)

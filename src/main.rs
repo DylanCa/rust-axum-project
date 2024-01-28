@@ -1,13 +1,11 @@
 use crate::api::auth_mw::auth_required;
+use crate::api::chat::config::get_chat_layer;
 use axum::body::Body;
 use axum::middleware::from_fn;
 use axum::response::Response;
 use axum::{middleware, Router};
 use dotenv::dotenv;
 use log::info;
-use serde_json::Value;
-use socketioxide::extract::{AckSender, Bin, Data, SocketRef};
-use socketioxide::SocketIo;
 use sqlx::mysql::MySqlPoolOptions;
 use sqlx::{MySql, MySqlPool, Pool};
 use std::sync::Arc;
@@ -33,10 +31,6 @@ async fn main() {
     let pool = get_db_pool().await;
     let app_state = Arc::new(AppState { db: pool.clone() });
 
-    let (socket_layer, io) = SocketIo::new_layer();
-
-    io.ns("/ws", on_connect);
-
     let routes_api =
         api::routes::get_routes(app_state.clone()).route_layer(from_fn(auth_required::<Body>));
 
@@ -45,7 +39,7 @@ async fn main() {
         .nest("/api", routes_api)
         .layer(middleware::map_response(main_response_mapper))
         .layer(CookieManagerLayer::new())
-        .layer(socket_layer);
+        .layer(get_chat_layer());
 
     let serv_addr = "0.0.0.0:3000";
     let listener = tokio::net::TcpListener::bind(&serv_addr).await.unwrap();
@@ -76,25 +70,4 @@ async fn main_response_mapper(res: Response) -> Response {
     info!("->> main_response_mapper");
 
     res
-}
-
-fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
-    info!("Socket.IO connected: {:?} {:?}", socket.ns(), socket.id);
-    socket.emit("auth", data).ok();
-
-    socket.on(
-        "message",
-        |socket: SocketRef, Data::<Value>(data), Bin(bin)| {
-            info!("Received event: {:?} {:?}", data, bin);
-            socket.bin(bin).emit("message-back", data).ok();
-        },
-    );
-
-    socket.on(
-        "message-with-ack",
-        |Data::<Value>(data), ack: AckSender, Bin(bin)| {
-            info!("Received event: {:?} {:?}", data, bin);
-            ack.bin(bin).send(data).ok();
-        },
-    );
 }

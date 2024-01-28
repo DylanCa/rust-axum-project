@@ -1,4 +1,21 @@
+use crate::api;
+use crate::api::auth_mw::auth_required;
+use crate::api::chat::config::get_chat_layer;
+use axum::body::Body;
+use axum::middleware::from_fn;
+use axum::response::Response;
+use axum::{middleware, Router};
+use dotenv::dotenv;
+use log::info;
+use sqlx::mysql::MySqlPoolOptions;
+use sqlx::{MySql, MySqlPool, Pool};
 use std::sync::Arc;
+use tower_cookies::CookieManagerLayer;
+
+#[derive(Debug)]
+pub struct AppState {
+    pub db: MySqlPool,
+}
 
 pub async fn get_router() -> Router {
     let pool = get_db_pool().await;

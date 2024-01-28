@@ -7,8 +7,8 @@ use sqlx::Row;
 use std::sync::Arc;
 
 use crate::api::redirection::models::{Redirection, RedirectionParams, RedirectionShortcode};
+use crate::config::connection::AppState;
 use crate::ctx::Ctx;
-use crate::AppState;
 use crate::Error::UrlNotFound;
 
 pub async fn create_redirection(

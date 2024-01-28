@@ -1,5 +1,5 @@
 use crate::api::notes::handlers::{create_note, get_note};
-use crate::AppState;
+use crate::config::connection::AppState;
 use axum::routing::{get, post};
 use axum::Router;
 use std::sync::Arc;

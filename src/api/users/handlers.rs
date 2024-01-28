@@ -1,7 +1,7 @@
 use crate::api::users::models::{User, UserLogin, UserResponse};
 use crate::api::AUTH_TOKEN;
+use crate::config::connection::AppState;
 use crate::ctx::Ctx;
-use crate::AppState;
 use crate::Error::{LoginFailed, UserNotFound};
 use axum::extract::State;
 use axum::http::StatusCode;

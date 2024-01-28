@@ -1,5 +1,5 @@
 use crate::api::{hello_world, notes, redirection, users};
-use crate::AppState;
+use crate::config::connection::AppState;
 use axum::Router;
 use std::sync::Arc;
 

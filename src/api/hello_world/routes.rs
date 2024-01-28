@@ -1,5 +1,5 @@
 use crate::api::hello_world::handlers::handler;
-use crate::AppState;
+use crate::config::connection::AppState;
 use axum::routing::get;
 use axum::Router;
 use std::sync::Arc;

@@ -1,5 +1,5 @@
 use crate::api::users::handlers::{create_user, get_user, login};
-use crate::AppState;
+use crate::config::connection::AppState;
 use axum::routing::{get, post};
 use axum::Router;
 use std::sync::Arc;

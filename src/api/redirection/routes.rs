@@ -1,5 +1,5 @@
 use crate::api::redirection::handlers::{create_redirection, get_redirection_url};
-use crate::AppState;
+use crate::config::connection::AppState;
 use axum::routing::{get, post};
 use axum::Router;
 use std::sync::Arc;

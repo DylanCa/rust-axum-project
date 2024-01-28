@@ -1,6 +1,6 @@
 use crate::api::notes::models::{Note, NoteResponse};
+use crate::config::connection::AppState;
 use crate::ctx::Ctx;
-use crate::AppState;
 use axum::extract::{Path, State};
 use axum::http::StatusCode;
 use axum::Json;

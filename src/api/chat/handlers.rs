@@ -6,6 +6,12 @@ pub fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
     info!("Socket.IO connected: {:?} {:?}", socket.ns(), socket.id);
     socket.emit("auth", data).ok();
 
+    socket.on("join", |socket: SocketRef, Data::<String>(room)| {
+        info!("Received join: {:?}", room);
+        let _ = socket.leave_all();
+        let _ = socket.join(room);
+    });
+
     socket.on(
         "message",
         |socket: SocketRef, Data::<Value>(data), Bin(bin)| {

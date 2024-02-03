@@ -1,7 +1,7 @@
+use crate::api::chat::models::{InMessage, OutMessage};
 use log::info;
 use serde_json::Value;
 use socketioxide::extract::{AckSender, Bin, Data, SocketRef};
-use crate::api::chat::models::{InMessage, OutMessage};
 
 pub fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
     info!("Socket.IO connected: {:?} {:?}", socket.ns(), socket.id);

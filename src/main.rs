@@ -1,6 +1,7 @@
 use crate::config::connection::get_router;
 use dotenv::dotenv;
 use log::info;
+use tracing_subscriber::FmtSubscriber;
 
 mod api;
 mod config;
@@ -10,7 +11,8 @@ mod errors;
 pub use self::errors::Error;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    tracing::subscriber::set_global_default(FmtSubscriber::default())?;
     dotenv().ok();
     env_logger::init();
 
@@ -22,4 +24,6 @@ async fn main() {
 
     let router = get_router().await;
     axum::serve(listener, router).await.unwrap();
+
+    Ok(())
 }

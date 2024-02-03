@@ -12,10 +12,13 @@ _Each objective has a `-> (resulting explored concept list)` and a detailed list
 - ✅ Note app per user
   - DB storing, data relation
 - 🔄 Chat app between 2 users & in a chatroom
-  - Websockets, Authentication, fast DB access
+  - ✅ Websockets / SocketIO
+  - 🔄 Authentication
+  - DB message storing & recovering (when user joins a chatroom)
 - ✅ Word-based URL redirection service
   - -> Generate shortened URL with words (like bit.ly/flamingo-test-ocean)
   - data transformation, redirection
+- 🔄 Setup Tracing
 - Full server wipe every x hours
   - automation
 - Dockerized, put on AWS and hosted & available online
@@ -23,5 +26,5 @@ _Each objective has a `-> (resulting explored concept list)` and a detailed list
 
 ## Goals for this Project
 - Improve with Rust and WebServ concepts
-- Learn Websockets
-- Learn Axum, Tower, Tokio, Serde, Strum and multiple popular crates.
+- Learn Websockets / SocketIO
+- Learn Axum, Tower, Tokio, Serde, Strum, Tracing, SocketIOxide and multiple popular crates.

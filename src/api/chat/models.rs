@@ -1,15 +1,17 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+
 #[derive(Debug, Deserialize)]
-pub struct InMessage {
-    pub room: String,
+pub struct IncomingToken {
+    pub token: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct IncomingMessage {
+    pub room_id: String,
     pub message: String,
 }
 
-#[derive(Debug, Serialize)]
-pub struct OutMessage {
-    pub user_id: String,
-    pub message: String,
-    pub datetime: chrono::DateTime<chrono::Utc>,
 #[derive(Debug, sqlx::FromRow)]
 pub struct Chatroom {
     id: String,

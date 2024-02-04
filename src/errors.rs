@@ -1,7 +1,7 @@
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
-use log::info;
+use tracing::info;
 use serde_json::{json, Value};
 
 #[derive(Debug)]

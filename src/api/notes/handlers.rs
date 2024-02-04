@@ -4,7 +4,7 @@ use crate::ctx::Ctx;
 use axum::extract::{Path, State};
 use axum::http::StatusCode;
 use axum::Json;
-use log::info;
+use tracing::info;
 use serde_json::{json, Value};
 use std::sync::Arc;
 

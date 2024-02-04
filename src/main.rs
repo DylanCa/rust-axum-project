@@ -1,6 +1,6 @@
 use crate::config::connection::get_router;
 use dotenv::dotenv;
-use log::info;
+use tracing::info;
 use tracing_subscriber::FmtSubscriber;
 
 mod api;
@@ -14,7 +14,6 @@ pub use self::errors::Error;
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     tracing::subscriber::set_global_default(FmtSubscriber::default())?;
     dotenv().ok();
-    env_logger::init();
 
     info!("🌟 Rust Playground Server 🌟");
 

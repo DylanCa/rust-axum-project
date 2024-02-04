@@ -10,7 +10,7 @@ use axum::middleware::Next;
 use axum::response::Response;
 use axum::RequestPartsExt;
 use lazy_regex::regex_captures;
-use log::info;
+use tracing::info;
 use tower_cookies::Cookies;
 
 pub async fn auth_required<B>(

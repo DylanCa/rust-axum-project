@@ -6,7 +6,7 @@ use axum::middleware::from_fn;
 use axum::response::Response;
 use axum::{middleware, Router};
 use dotenv::dotenv;
-use log::info;
+use tracing::info;
 use sqlx::mysql::MySqlPoolOptions;
 use sqlx::{MySql, MySqlPool, Pool};
 use std::sync::Arc;

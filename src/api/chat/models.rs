@@ -25,6 +25,15 @@ pub struct ChatMessage {
     message: String,
     created_at: DateTime<Utc>,
 }
+
+#[derive(Debug, sqlx::FromRow)]
+pub struct ChatToken {
+    id: String,
+    user_id: String,
+    token: String,
+    created_at: DateTime<Utc>,
+}
+
 impl Chatroom {
     pub fn new(name: String) -> Self {
         Self {
@@ -48,6 +57,17 @@ impl ChatMessage {
 
     pub fn room_id(self) -> String {
         self.room_id
+    }
+}
+
+impl ChatToken {
+    pub fn new(user_id: String, token: String) -> Self {
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            user_id,
+            token,
+            created_at: chrono::Utc::now(),
+        }
     }
 }
 }

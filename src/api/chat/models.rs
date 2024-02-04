@@ -16,6 +16,15 @@ pub struct Chatroom {
     name: String,
     created_at: DateTime<Utc>,
 }
+
+#[derive(Debug, Clone, Serialize, sqlx::FromRow)]
+pub struct ChatMessage {
+    id: String,
+    room_id: String,
+    user_id: String,
+    message: String,
+    created_at: DateTime<Utc>,
+}
 impl Chatroom {
     pub fn new(name: String) -> Self {
         Self {
@@ -23,6 +32,22 @@ impl Chatroom {
             name,
             created_at: chrono::Utc::now(),
         }
+    }
+}
+
+impl ChatMessage {
+    pub fn new(room_id: String, user_id: String, message: String) -> Self {
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            room_id,
+            user_id,
+            message,
+            created_at: chrono::Utc::now(),
+        }
+    }
+
+    pub fn room_id(self) -> String {
+        self.room_id
     }
 }
 }

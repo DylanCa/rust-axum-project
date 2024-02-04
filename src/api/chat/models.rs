@@ -34,6 +34,15 @@ pub struct ChatToken {
     created_at: DateTime<Utc>,
 }
 
+#[derive(Debug, sqlx::FromRow)]
+pub struct ChatSession {
+    id: String,
+    socket_id: String,
+    token_id: String,
+    created_at: DateTime<Utc>,
+    deleted_at: Option<DateTime<Utc>>,
+}
+
 impl Chatroom {
     pub fn new(name: String) -> Self {
         Self {
@@ -70,4 +79,15 @@ impl ChatToken {
         }
     }
 }
+
+impl ChatSession {
+    pub fn new(socket_id: String, token_id: String) -> Self {
+        Self {
+            id: uuid::Uuid::new_v4().to_string(),
+            socket_id,
+            token_id,
+            created_at: chrono::Utc::now(),
+            deleted_at: None,
+        }
+    }
 }

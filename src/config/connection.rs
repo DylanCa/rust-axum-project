@@ -6,11 +6,11 @@ use axum::middleware::from_fn;
 use axum::response::Response;
 use axum::{middleware, Router};
 use dotenv::dotenv;
-use tracing::info;
 use sqlx::mysql::MySqlPoolOptions;
 use sqlx::{MySql, MySqlPool, Pool};
 use std::sync::Arc;
 use tower_cookies::CookieManagerLayer;
+use tracing::info;
 
 #[derive(Debug)]
 pub struct AppState {

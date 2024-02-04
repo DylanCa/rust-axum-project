@@ -1,8 +1,8 @@
 use axum::http::StatusCode;
 use axum::response::{IntoResponse, Response};
 use axum::Json;
-use tracing::info;
 use serde_json::{json, Value};
+use tracing::info;
 
 #[derive(Debug)]
 pub enum Error {

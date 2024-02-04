@@ -1,7 +1,7 @@
+use crate::api::chat::models::{ChatMessage, IncomingMessage};
 use serde_json::Value;
 use socketioxide::extract::{Bin, Data, SocketRef};
-use tracing::{info};
-use crate::api::chat::models::{ChatMessage, IncomingMessage};
+use tracing::info;
 
 pub fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
     info!("Socket.IO connected: {:?} {:?}", socket.ns(), socket.id);
@@ -19,7 +19,9 @@ pub fn on_connect(socket: SocketRef, Data(data): Data<Value>) {
             info!("Received event: {:?} {:?}", data, bin);
 
             let response = ChatMessage::new(data.room_id, socket.id.to_string(), data.message);
-            let _ = socket.within(response.clone().room_id()).emit("message", response);
+            let _ = socket
+                .within(response.clone().room_id())
+                .emit("message", response);
         },
     );
 }

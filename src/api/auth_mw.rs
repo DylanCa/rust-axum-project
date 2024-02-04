@@ -10,8 +10,8 @@ use axum::middleware::Next;
 use axum::response::Response;
 use axum::RequestPartsExt;
 use lazy_regex::regex_captures;
-use tracing::info;
 use tower_cookies::Cookies;
+use tracing::info;
 
 pub async fn auth_required<B>(
     ctx: Result<Ctx, Error>,

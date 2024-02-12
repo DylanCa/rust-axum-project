@@ -1,4 +1,4 @@
-# Rust Playground
+# Rust Playground - Multiple projects to explore Rust ecosystem !
 
 Multiple projects to learn Rust, axum and server-related libs in depth.
 
